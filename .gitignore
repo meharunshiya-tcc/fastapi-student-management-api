@@ -1,28 +1,11 @@
-
-# Python cache
-__pycache__/
-*.py[cod]
-
-# Virtual environment
 venv/
 .venv/
-
-# Environment variables
+__pycache__/
+*.pyc
 .env
-.env.*
-
-# IDE
-.vscode/
-
-# Operating system
-.DS_Store
-Thumbs.db
-
-# Uploaded files
-app/uploads/*
-
-# Database files
 *.db
-
-# Test cache
+.vscode/
 .pytest_cache/
+
+app/uploads/*
+!app/uploads/.gitkeep

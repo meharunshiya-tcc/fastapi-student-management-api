@@ -1,24 +1,47 @@
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-# Create FastAPI application
+from app.database import engine, Base
+from app import models
+
+from app.routes import students
+from app.middleware.logging import logging_middleware
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
+
+# Initialize FastAPI
 app = FastAPI(
     title="Student Management API",
-    description="A REST API built using FastAPI",
+    description="CRUD, Database, File Handling and Middleware",
     version="1.0.0"
 )
 
-# Root endpoint
+# Custom middleware
+app.middleware("http")(logging_middleware)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+# Register routes
+app.include_router(students.router)
+
 @app.get("/")
-async def root():
+def home():
     return {
-        "message": "Welcome to Student Management API",
-        "status": "Running"
+        "message": "Student Management API is running"
     }
 
-# Health check endpoint
 @app.get("/health")
-async def health_check():
+def health():
     return {
         "status": "healthy"
     }
